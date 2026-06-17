@@ -46,6 +46,15 @@ fi
 
 PORT2=$((PORT + 1))
 
+# ================== 安装目录 ==================
+# curl|bash 管道模式下 $0 是 "bash" 而非文件路径, 需要回退到默认目录
+if [ -f "$0" ] 2>/dev/null; then
+    INSTALL_DIR="$(cd "$(dirname "$0")" && pwd)"
+else
+    INSTALL_DIR="/opt/vless-singbox"
+    mkdir -p "$INSTALL_DIR"
+fi
+
 # ================== 系统检测 ==================
 detect_os() {
     if [ -f /etc/os-release ]; then
@@ -206,7 +215,7 @@ open_ports() {
 
 # ================== 下载 sing-box ==================
 download_singbox() {
-    SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+    SCRIPT_DIR="$INSTALL_DIR"
     SINGBOX_BIN="${SCRIPT_DIR}/sing-box"
 
     if [ -f "$SINGBOX_BIN" ]; then
@@ -247,7 +256,7 @@ download_singbox() {
 
 # ================== 证书生成 ==================
 generate_cert() {
-    SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+    SCRIPT_DIR="$INSTALL_DIR"
     CERT_PEM="${SCRIPT_DIR}/cert.pem"
     KEY_PEM="${SCRIPT_DIR}/key.pem"
 
@@ -264,7 +273,7 @@ generate_cert() {
 
 # ================== 生成配置 ==================
 generate_config() {
-    SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+    SCRIPT_DIR="$INSTALL_DIR"
     CONFIG_JSON="${SCRIPT_DIR}/config.json"
 
     cat > "$CONFIG_JSON" <<CFGEOF
@@ -316,7 +325,7 @@ CFGEOF
 # ================== 生成链接 ==================
 generate_links() {
     IP=$(get_public_ip)
-    SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+    SCRIPT_DIR="$INSTALL_DIR"
     LINK_TXT="${SCRIPT_DIR}/proxy_links.txt"
 
     VLESS_LINK="vless://${UUID}@${IP}:${PORT}?security=tls&encryption=none&type=ws&path=%2F&sni=${MASQ_DOMAIN}&allowInsecure=1#VLESS-WS-${IP}"
@@ -339,7 +348,7 @@ LINKEOF
 
 # ================== 服务管理 ==================
 setup_service() {
-    SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+    SCRIPT_DIR="$INSTALL_DIR"
     INIT_SYSTEM=$(detect_init)
 
     if [ "$INIT_SYSTEM" = "systemd" ]; then
@@ -401,7 +410,7 @@ ORCEOF
 # ================== 午夜定时重启 ==================
 setup_cron() {
     INIT_SYSTEM=$(detect_init)
-    CRON_SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+    CRON_SCRIPT_DIR="$INSTALL_DIR"
     if [ "$INIT_SYSTEM" = "systemd" ]; then
         RESTART_CMD="systemctl restart ${SERVICE_NAME}"
     elif [ "$INIT_SYSTEM" = "openrc" ]; then
@@ -429,7 +438,7 @@ setup_cron() {
 
 # ================== 主流程 ==================
 main() {
-    SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+    SCRIPT_DIR="$INSTALL_DIR"
     CERT_PEM="${SCRIPT_DIR}/cert.pem"
     KEY_PEM="${SCRIPT_DIR}/key.pem"
     CONFIG_JSON="${SCRIPT_DIR}/config.json"
