@@ -1,0 +1,16 @@
+# Generated files
+config.json
+cert.pem
+key.pem
+proxy_links.txt
+
+# Downloaded binaries
+sing-box
+sing-box.tar.gz
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Node.js
+node_modules/

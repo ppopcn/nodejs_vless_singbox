@@ -1,0 +1,16 @@
+{
+  "name": "singbox-vless-hy2",
+  "version": "1.0.0",
+  "description": "Sing-box 自动部署脚本（VLESS-WS-TLS + Hysteria 2 混淆版，Node.js 无需 root）",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": ["sing-box", "vless", "hysteria2", "quic", "proxy", "deploy", "nodejs", "no-root"],
+  "author": "eishare",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  }
+}
