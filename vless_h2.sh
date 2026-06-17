@@ -8,7 +8,7 @@ set -e
 
 # ================== 硬编码配置 ==================
 UUID="fdeeda45-0a8e-4570-bcc6-d68c995f5830"
-SINGBOX_VER="1.11.1"
+SINGBOX_VER="1.13.12"
 MASQ_DOMAIN="www.bing.com"
 SERVICE_NAME="vless-singbox"
 
@@ -225,9 +225,9 @@ download_singbox() {
 
     LIBC_TYPE=$(detect_libc)
     if [ "$LIBC_TYPE" = "musl" ]; then
-        SUFFIX="linux-musl-amd64"
+        SUFFIX="linux-amd64-musl"
     else
-        SUFFIX="linux-amd64"
+        SUFFIX="linux-amd64-glibc"
     fi
 
     TARBALL="sing-box-${SINGBOX_VER}-${SUFFIX}.tar.gz"
