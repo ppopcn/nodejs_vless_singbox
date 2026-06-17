@@ -141,9 +141,9 @@ function generateCert(domain) {
 
 async function checkSingBox() {
   if (fileExists(SINGBOX_BIN)) return;
-  const SINGBOX_VER = "1.11.1";
-  // 根据 libc 类型选择对应二进制：musl → linux-musl-amd64, glibc → linux-amd64
-  const suffix = LIBC_TYPE === "musl" ? `linux-musl-amd64` : `linux-amd64`;
+  const SINGBOX_VER = "1.13.12";
+  // 根据 libc 类型选择对应二进制：musl → linux-amd64-musl, glibc → linux-amd64-glibc
+  const suffix = LIBC_TYPE === "musl" ? `linux-amd64-musl` : `linux-amd64-glibc`;
   const tarName = `sing-box-${SINGBOX_VER}-${suffix}.tar.gz`;
   const tarUrl = `https://github.com/SagerNet/sing-box/releases/download/v${SINGBOX_VER}/${tarName}`;
   console.log(`[下载] sing-box v${SINGBOX_VER} (${LIBC_TYPE}): ${tarUrl}`);
